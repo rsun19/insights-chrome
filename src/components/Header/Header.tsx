@@ -87,7 +87,7 @@ export const Header = ({ breadcrumbsProps }: { breadcrumbsProps?: Breadcrumbspro
                 </ToolbarItem>
               )}
             </ToolbarGroup>
-            <ToolbarGroup className="pf-u-flex-grow-1 pf-u-mr-0" variant="filter-group">
+            <ToolbarGroup className="pf-u-flex-grow-1" variant="filter-group">
               <SearchInput onStateChange = {hideAllServices} />
             </ToolbarGroup>
             <ToolbarGroup
