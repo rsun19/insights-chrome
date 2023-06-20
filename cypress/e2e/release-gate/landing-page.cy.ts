@@ -15,7 +15,10 @@ const FRONT_PAGE_SERVICES = [
 
 describe('Landing page', () => {
   it('visit landing page', () => {
+    cy.login();
+
     cy.visit('/');
+<<<<<<< HEAD
     cy.login();
     cy.reload();
     cy.intercept('POST', '/api/chrome-service/v1/last-visited', lastVisitedJSON);
@@ -115,6 +118,17 @@ describe('Landing page', () => {
     for (let i = 0; i < FAVORITED_OVERFILLS.length; i++) {
       cy.get('.chr-c-favorite-service__tile').eq(i).find('.pf-u-mb-sm').should('contain', FAVORITED_OVERFILLS[i]);
     }
+=======
+
+    cy.intercept({
+      method: 'GET',
+      url: '**/services/services.json',
+    }).as('services');
+
+    cy.wait('@services').its('response.statusCode').should('equal', 200);
+
+    // check if a favorites link exists on the page
+>>>>>>> refs/remotes/origin/master
     cy.contains('View my favorite services').should('exist');
     cy.contains('Recently visited').should('exist');
     for (let i = 0; i < lastVisitedArray.length; i++) {
