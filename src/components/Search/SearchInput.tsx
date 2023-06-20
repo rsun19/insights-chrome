@@ -18,6 +18,7 @@ import { HighlightingResponseType, SearchResponseType, SearchResultItem } from '
 import EmptySearchState from './EmptySearchState';
 import { isProd } from '../../utils/common';
 import { useSegment } from '../../analytics/useSegment';
+import { Header } from '../Header/Header';
 
 const IS_PROD = isProd();
 const REPLACE_TAG = 'REPLACE_TAG';
@@ -77,7 +78,11 @@ const initialSearchState: SearchResponseType = {
   start: 0,
 };
 
-const SearchInput = () => {
+type SearchInputListener = {
+  onStateChange: (isOpen: boolean) => void;
+}
+
+const SearchInput = ({onStateChange}: SearchInputListener) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const [isFetching, setIsFetching] = useState(false);
@@ -131,6 +136,7 @@ const SearchInput = () => {
     if (menuRef.current?.contains(event.target as Node) || toggleRef.current?.contains(event.target as Node)) {
       if (event.key === 'Escape' || event.key === 'Tab') {
         setIsOpen(!isOpen);
+        onStateChange(!isOpen);
         toggleRef.current?.focus();
       }
     }
@@ -139,6 +145,7 @@ const SearchInput = () => {
   const handleClickOutside = (event: MouseEvent) => {
     if (!blockCloseEvent.current && isOpen && !menuRef.current?.contains(event.target as Node)) {
       setIsOpen(false);
+      onStateChange(false);
     }
     // unblock the close event to prevent unwanted hanging dropdown menu on subsequent input clicks
     blockCloseEvent.current = false;
@@ -147,6 +154,7 @@ const SearchInput = () => {
   const onInputClick: SearchInputProps['onClick'] = () => {
     if (!isOpen && searchResults.numFound > 0) {
       setIsOpen(true);
+      onStateChange(true);
       // can't use event.stoppropagation because it will block other opened menus from triggering their close event
       blockCloseEvent.current = true;
     }
@@ -156,6 +164,7 @@ const SearchInput = () => {
     ev.stopPropagation(); // Stop handleClickOutside from handling, it would close the menu
     if (!isOpen) {
       setIsOpen(true);
+      onStateChange(true);
     }
 
     if (isOpen && ev.key === 'ArrowDown' && menuRef.current) {
@@ -163,6 +172,7 @@ const SearchInput = () => {
       firstElement && (firstElement as HTMLElement).focus();
     } else if (isOpen && ev.key === 'Escape') {
       setIsOpen(false);
+      onStateChange(false);
     }
   };
 
@@ -236,6 +246,7 @@ const SearchInput = () => {
         // make sure the input is not clicked/focused
         ev.stopPropagation();
         setIsOpen(false);
+        onStateChange(false);
       }}
     />
   );

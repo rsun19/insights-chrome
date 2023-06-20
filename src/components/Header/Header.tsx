@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import ReactDOM from 'react-dom';
 import Tools from './Tools';
 import UnAuthtedHeader from './UnAuthtedHeader';
@@ -45,6 +45,10 @@ export const Header = ({ breadcrumbsProps }: { breadcrumbsProps?: Breadcrumbspro
   const { pathname } = useLocation();
   const noBreadcrumb = !['/', '/allservices', '/favoritedservices'].includes(pathname);
   const { md, lg } = useWindowWidth();
+  const [searchOpen, setSearchOpen] = useState(false);
+  const hideAllServices  = (isOpen: boolean) => {
+    setSearchOpen(isOpen)
+  }
 
   return (
     <Fragment>
@@ -73,7 +77,7 @@ export const Header = ({ breadcrumbsProps }: { breadcrumbsProps?: Breadcrumbspro
             <ToolbarGroup variant="filter-group">
               {user && (
                 <ToolbarItem>
-                  {<AllServicesDropdown />}
+                  { !(md && searchOpen) && <AllServicesDropdown /> }
                   {isITLessEnv && user?.identity?.user?.is_org_admin && <SatelliteLink />}
                 </ToolbarItem>
               )}
@@ -84,7 +88,7 @@ export const Header = ({ breadcrumbsProps }: { breadcrumbsProps?: Breadcrumbspro
               )}
             </ToolbarGroup>
             <ToolbarGroup className="pf-u-flex-grow-1 pf-u-mr-0" variant="filter-group">
-              <SearchInput />
+              <SearchInput onStateChange = {hideAllServices} />
             </ToolbarGroup>
             <ToolbarGroup
               className="pf-m-icon-button-group pf-u-ml-auto"
