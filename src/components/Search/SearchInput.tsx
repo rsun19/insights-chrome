@@ -19,6 +19,7 @@ import EmptySearchState from './EmptySearchState';
 import { isProd } from '../../utils/common';
 import { useSegment } from '../../analytics/useSegment';
 import { Header } from '../Header/Header';
+import useWindowWidth from '../../hooks/useWindowWidth';
 
 export type SearchInputprops = {
   isExpanded?: boolean;
@@ -99,6 +100,7 @@ const SearchInput = ({onStateChange}: SearchInputListener) => {
   const toggleRef = useRef<HTMLInputElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const { md, lg } = useWindowWidth();
 
   // sort result items based on matched field and its priority
   const resultCategories = useMemo(
@@ -256,11 +258,11 @@ const SearchInput = ({onStateChange}: SearchInputListener) => {
         setIsOpen(false);
         onStateChange(false);
       }}
-      expandableInput={{ isExpanded, onToggleExpand, toggleAriaLabel: 'Expandable search input toggle' }}
+      expandableInput={{ isExpanded: (md ? isExpanded : true), onToggleExpand, toggleAriaLabel: 'Expandable search input toggle' }}
       onClick={onInputClick}
       ref={toggleRef}
       onKeyDown={onToggleKeyDown}
-      className={isExpanded ? "pf-u-flex-grow-1" : "chr-c-search__collapsed"}
+      className={ isExpanded ? "pf-u-flex-grow-1" : "chr-c-search__collapsed" }
     />
   );
 
