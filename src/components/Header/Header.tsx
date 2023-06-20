@@ -44,7 +44,7 @@ export const Header = ({ breadcrumbsProps }: { breadcrumbsProps?: Breadcrumbspro
   const isITLessEnv = ITLess();
   const { pathname } = useLocation();
   const noBreadcrumb = !['/', '/allservices', '/favoritedservices'].includes(pathname);
-  const lg = useWindowWidth();
+  const { md, lg } = useWindowWidth();
 
   return (
     <Fragment>
@@ -73,7 +73,7 @@ export const Header = ({ breadcrumbsProps }: { breadcrumbsProps?: Breadcrumbspro
             <ToolbarGroup variant="filter-group">
               {user && (
                 <ToolbarItem>
-                  <AllServicesDropdown />
+                  {<AllServicesDropdown />}
                   {isITLessEnv && user?.identity?.user?.is_org_admin && <SatelliteLink />}
                 </ToolbarItem>
               )}
