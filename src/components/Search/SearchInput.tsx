@@ -18,7 +18,6 @@ import { HighlightingResponseType, SearchResponseType, SearchResultItem } from '
 import EmptySearchState from './EmptySearchState';
 import { isProd } from '../../utils/common';
 import { useSegment } from '../../analytics/useSegment';
-import { Header } from '../Header/Header';
 import useWindowWidth from '../../hooks/useWindowWidth';
 
 export type SearchInputprops = {
@@ -85,9 +84,9 @@ const initialSearchState: SearchResponseType = {
 
 type SearchInputListener = {
   onStateChange: (isOpen: boolean) => void;
-}
+};
 
-const SearchInput = ({onStateChange}: SearchInputListener) => {
+const SearchInput = ({ onStateChange }: SearchInputListener) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const [isFetching, setIsFetching] = useState(false);
@@ -100,6 +99,7 @@ const SearchInput = ({onStateChange}: SearchInputListener) => {
   const toggleRef = useRef<HTMLInputElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { md, lg } = useWindowWidth();
 
   // sort result items based on matched field and its priority
@@ -171,7 +171,6 @@ const SearchInput = ({onStateChange}: SearchInputListener) => {
     if (!isOpen) {
       setIsOpen(true);
       onStateChange(true);
-
     }
 
     if (isOpen && ev.key === 'ArrowDown' && menuRef.current) {
@@ -258,11 +257,17 @@ const SearchInput = ({onStateChange}: SearchInputListener) => {
         setIsOpen(false);
         onStateChange(false);
       }}
-      expandableInput={{ isExpanded: (md ? isExpanded : true), onToggleExpand, toggleAriaLabel: 'Expandable search input toggle' }}
+      {...(md && {
+        expandableInput: {
+          isExpanded: md ? isExpanded : true,
+          onToggleExpand,
+          toggleAriaLabel: 'Expandable search input toggle',
+        },
+      })}
       onClick={onInputClick}
       ref={toggleRef}
       onKeyDown={onToggleKeyDown}
-      className={ isExpanded ? "pf-u-flex-grow-1" : "chr-c-search__collapsed" }
+      className={isExpanded ? 'pf-u-flex-grow-1' : 'chr-c-search__collapsed'}
     />
   );
 

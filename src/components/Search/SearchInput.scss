@@ -37,10 +37,11 @@
       }
     }
   }
-  @media screen and (max-width: $pf-global--breakpoint--md) {
-    .chr-c-search__input {
-      .chr-c-search__collapsed {
-        justify-content: flex-end;
-      }
+  @media screen and (max-width: 768px) {
+    .chr-c-search__input .chr-c-search__collapsed {
+      justify-content: flex-end;
+    }
+    .chr-c-search__input input {
+      color: white;
     }
   }
