@@ -19,6 +19,7 @@ import LibtJWTContext from '../LibJWTContext';
 import { ReduxState } from '../../redux/store';
 import BellIcon from '@patternfly/react-icons/dist/esm/icons/bell-icon';
 import { toggleNotificationsDrawer } from '../../redux/actions';
+import useWindowWidth from '../../hooks/useWindowWidth';
 
 const isITLessEnv = ITLess();
 
@@ -69,6 +70,7 @@ const Tools = () => {
     isRhosakEntitled: false,
     isDemoAcc: false,
   });
+  const { xs } = useWindowWidth();
   const user = useSelector(({ chrome: { user } }: ReduxState) => user!);
   const unreadNotifications = useSelector(({ chrome: { notifications } }: ReduxState) => notifications?.data?.filter((isRead) => isRead) || []);
   const isDrawerExpanded = useSelector(({ chrome: { notifications } }: ReduxState) => notifications?.isExpanded);
@@ -222,7 +224,7 @@ const Tools = () => {
           },
         })}
       >
-        <BetaSwitcher />
+        {!xs && <BetaSwitcher />}
       </ToolbarItem>
       {isNotificationsEnabled && (
         <ToolbarItem>
